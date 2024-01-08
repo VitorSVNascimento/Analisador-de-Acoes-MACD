@@ -1,0 +1,11 @@
+ACRONYM_COLUMN = 'Acronimo'
+NAME_COLUMN = 'Nome'
+COMBINATION_COLUMN = 'Combinacao'
+SHORT_WINDOW = 12
+LONG_WINDOW = 26
+SIGNAL_WINDOW = 9
+MAIN_COLUMN = 'Open'
+EMA_SHORT = 'ema_short'
+EMA_LONG = 'ema_long'
+MACD_VAL = 'macd_val'
+MACD_SIGNAL = 'macd_signal'
