@@ -9,3 +9,6 @@ EMA_SHORT = 'ema_short'
 EMA_LONG = 'ema_long'
 MACD_VAL = 'macd_val'
 MACD_SIGNAL = 'macd_signal'
+INTERVAL_TEXT_NAME = "intervalo"
+PERIOD_TEXT_NAME = "periodo"
+ERROR_STRING = "Não foi possivel obter o dataset"

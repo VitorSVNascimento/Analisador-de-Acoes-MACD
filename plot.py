@@ -1,4 +1,3 @@
-import finance as fin
 from constants import *
 import plotly.graph_objects as go
 import plotly as pio

@@ -1,6 +1,7 @@
 import yfinance as yf
 from constants import *
 import numpy as np
+
 def get_finance_dataset(acronym,period='1m',data_interval='1d'):
   df = yf.Ticker(acronym)
   df_history = df.history(period=period,interval=data_interval)
@@ -12,7 +13,7 @@ HOLD = 0
 
 MAX_PROFIT_PERCENT = 1.10 #Valor mínimo de lucro em porcentagem
 MAX_LOSS_PERCENT = 0.97 #Valor máximo de prejuizo em porcentagem
-def decide_action(macd_val, signal_val, position, current_price, last_buy_price=0):
+def decide_action(macd_val, signal_val, position, current_price, last_buy_price=0,max_profit_percentage=1.10,max_loss_percentage=0.97):
     if np.isnan(macd_val) or np.isnan(signal_val):
         return HOLD
 
@@ -21,7 +22,7 @@ def decide_action(macd_val, signal_val, position, current_price, last_buy_price=
 
     elif macd_val < signal_val and position == BUY:
         potential_profit = current_price / last_buy_price
-        return SELL if potential_profit >= MAX_PROFIT_PERCENT or potential_profit <= MAX_LOSS_PERCENT else HOLD
+        return SELL if potential_profit >= max_profit_percentage or potential_profit <= max_loss_percentage else HOLD
     else:
         return HOLD
     
@@ -34,7 +35,7 @@ actions_json = {BUY:'buy',
                 HOLD:'hold'}
 
 
-def get_buy_and_sell_index(dataset):
+def get_buy_and_sell_index(dataset,max_profit_percentage=1.10,max_loss_percentage=0.97):
     initial_investment = 1000
     available_cash = initial_investment
     last_buy_price = 0
@@ -50,7 +51,9 @@ def get_buy_and_sell_index(dataset):
             dataset[MACD_SIGNAL][i],
             position,
             dataset[MAIN_COLUMN][i],
-            last_buy_price
+            last_buy_price,
+            max_profit_percentage,
+            max_loss_percentage
         )
         if action == BUY:
             position = BUY
@@ -67,6 +70,6 @@ def get_buy_and_sell_index(dataset):
             sell_price = dataset[MAIN_COLUMN][i]
             available_cash += sell_price * shares_bought
             total_profit += (sell_price - last_buy_price) * shares_bought
-        if action != HOLD:
-            print(f"Data:{dataset.index[i]}\tValor: {dataset[MAIN_COLUMN][i]:.2f} \tAção: {actions_json[action]}")
+        # if action != HOLD:
+            # print(f"Data:{dataset.index[i]}\tValor: {dataset[MAIN_COLUMN][i]:.2f} \tAção: {actions_json[action]}")
     return buy_index,sell_index
