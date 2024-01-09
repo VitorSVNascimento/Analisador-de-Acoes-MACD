@@ -3,7 +3,6 @@ import pandas as pd
 from constants import * 
 import finance as fin
 from plot import plot_action_graphic
-import traceback
 # from fbprophet import Prophet
 # from fbprophet.plot import plot_plotly, plot_components_plotly
 
@@ -15,7 +14,6 @@ def get_finance_dataset(acronym,period='1m',data_interval='1d'):
    try:
       return fin.get_finance_dataset(acronym,period,data_interval)
    except Exception:
-      traceback.print_exc()
       return ERROR_STRING
 
 @st.cache_data
